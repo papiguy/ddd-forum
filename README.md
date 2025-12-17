@@ -13,8 +13,6 @@
 
 > A [SOLID](https://khalilstemmler.com/articles/solid-principles/solid-typescript/) hackernews-inspired forum site built with TypeScript using the [clean architecture](https://khalilstemmler.com/articles/software-design-architecture/organizing-app-logic/) and [DDD best practices](https://khalilstemmler.com/articles/domain-driven-design-intro/).
 
-![DDDForum](https://user-images.githubusercontent.com/6892666/67032446-9931db00-f0e1-11e9-894d-7bccd240c851.png)
-
 ## About 
 
 DDDForum.com is the application that we build in [solidbook.io - The Software Design and Architecture Handbook](https://solidbook.io). 
@@ -74,7 +72,7 @@ You can visit the app by going to `http://localhost:3000`.
 
 #### Backend
 
-- [Sequelize](https://github.com/sequelize/sequelize) - The ORM for Node.js
+- [TypeORM](https://typeorm.io/) - Multi-database ORM supporting PostgreSQL, MySQL, and MongoDB
 - [Express.js](https://expressjs.com/) - Lightweight webserver
 - [Redis](https://redis.io/) - For holding onto JWT tokens and refresh tokens
 
@@ -129,7 +127,7 @@ In the` users` subdomain, we're only concerned with concepts that are related to
 - `domain` layer: `user` ([aggregate root](https://khalilstemmler.com/articles/typescript-domain-driven-design/aggregate-design-persistence/)), `userEmail` ([value object](https://khalilstemmler.com/articles/typescript-value-object/)), `userCreated` ([domain event](https://khalilstemmler.com/articles/typescript-domain-driven-design/chain-business-logic-domain-events/)).
 - `application` layer: `createUserUseCase` ([use case](https://khalilstemmler.com/articles/enterprise-typescript-nodejs/application-layer-use-cases/)), `getUserByUserName` (use case).
 - `adapter` layer: `IUserRepo` ([respository](https://khalilstemmler.com/articles/typescript-domain-driven-design/repository-dto-mapper/) interface adapter)
-- `infrastructure` layer: `SequelizeUserRepo` (a concrete implementation of the IUserRepo), `UserDTO` ([data transmission objects](https://khalilstemmler.com/articles/typescript-domain-driven-design/repository-dto-mapper/)).
+- `infrastructure` layer: `TypeORMUserRepo` (a concrete implementation of the IUserRepo), `UserDTO` ([data transmission objects](https://khalilstemmler.com/articles/typescript-domain-driven-design/repository-dto-mapper/)).
 
 ### `forum` subdomain
 
@@ -140,7 +138,7 @@ Here are a few examples of concepts from the `forum` subdomain.
 - `domain` layer: `member`, `comment`, `post`, `postVote`, `commentVote`, `commentVotesChanged`
 - `application` layer: `replyToComment`, `getMemberByUserName`,  `upvotePost`, `downvotePost`
 - `adapter` layer: `ICommentRepo`, `IPostRepo`, `IMemberRepo`
-- `infrastructure` layer: `SequelizeCommentRepo`, `SequelizePostRepo`, `SequelizeMemberRepo`
+- `infrastructure` layer: `TypeORMCommentRepo`, `TypeORMPostRepo`, `TypeORMMemberRepo`
 
 ## Project visualization
 

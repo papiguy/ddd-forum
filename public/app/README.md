@@ -1,5 +1,24 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Branding Configuration
+
+The application supports custom branding through environment variables. To configure your branding:
+
+1. Copy `.env.example` to `.env`:
+   ```bash
+   cp .env.example .env
+   ```
+
+2. Update the branding variables in `.env`:
+   - `REACT_APP_BRAND_NAME` - Your brand name (e.g., "Erth.AI")
+   - `REACT_APP_BRAND_TAGLINE` - Your tagline (e.g., "Where 3D lives")
+   - `REACT_APP_BRAND_LOGO` - Path to your logo in the public folder (e.g., "/erth-logo.png")
+   - `REACT_APP_BRAND_COPYRIGHT` - Copyright text (e.g., "Erth.AI Inc.")
+
+3. Place your logo file in the `public/` folder
+
+The `.env.example` file contains default DDD Forum branding. Your custom `.env` file is gitignored to keep your branding configuration private.
+
 ## Available Scripts
 
 In the project directory, you can run:
