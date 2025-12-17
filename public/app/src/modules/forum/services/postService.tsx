@@ -2,7 +2,6 @@
 import { APIResponse } from "../../../shared/infra/services/APIResponse";
 import { PostType, Post } from "../models/Post";
 import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
-import { IAuthService } from "../../users/services/authService";
 import { Result } from "../../../shared/core/Result";
 import { right, left } from "../../../shared/core/Either";
 import { PostUtil } from "../utils/PostUtil";
@@ -18,11 +17,6 @@ export interface IPostService {
 }
 
 export class PostService extends BaseAPI implements IPostService {
-
-  constructor (authService: IAuthService) {
-    super(authService);
-  }
-
   public async getPostBySlug (slug: string): Promise<APIResponse<Post>> {
     try {
       const accessToken = this.authService.getToken('access-token');
@@ -39,7 +33,8 @@ export class PostService extends BaseAPI implements IPostService {
         PostUtil.toViewModel(response.data.post)
       ));
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -59,7 +54,8 @@ export class PostService extends BaseAPI implements IPostService {
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
       );
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -78,7 +74,8 @@ export class PostService extends BaseAPI implements IPostService {
         response.data.posts.map((p: PostDTO) => PostUtil.toViewModel(p)))
       );
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -89,7 +86,8 @@ export class PostService extends BaseAPI implements IPostService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -100,7 +98,8 @@ export class PostService extends BaseAPI implements IPostService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -111,7 +110,8 @@ export class PostService extends BaseAPI implements IPostService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 }

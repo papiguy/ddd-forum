@@ -1,11 +1,11 @@
 
-import { RedisClient } from 'redis'
+import type { RedisClientType } from 'redis'
 
 export abstract class AbstractRedisClient {
   private tokenExpiryTime: number = 604800;
-  protected client: RedisClient;
+  protected client: RedisClientType;
 
-  constructor (client: RedisClient) {
+  constructor (client: RedisClientType) {
     this.client = client;
   }
 
@@ -14,101 +14,46 @@ export abstract class AbstractRedisClient {
     return allKeys.length;
   }
 
-  public exists (key: string): Promise<boolean> {
-    return new Promise((resolve, reject) => {
-      return this.count(key)
-        .then((count) => {
-          return resolve(count >= 1 ? true : false)
-        })
-        .catch((err) => {
-          return reject(err);
-        })
-    })
+  public async exists (key: string): Promise<boolean> {
+    const count = await this.count(key);
+    return count >= 1;
   }
 
-  public getOne<T> (key: string): Promise<T> {
-    return new Promise((resolve, reject) => {
-      this.client.get(key,
-         (error: Error, reply: unknown) => {
-          if (error) {
-            return reject(error)
-          } else {
-            return resolve(<T>reply);
-          }
-      });
-    })
+  public async getOne<T> (key: string): Promise<T> {
+    const reply = await this.client.get(key);
+    return reply as T;
   }
 
-  public getAllKeys(wildcard: string): Promise<string[]> {
-    return new Promise((resolve, reject) => {
-      this.client.keys(wildcard,
-        async (error: Error, results: string[]) => {
-          if (error) {
-            return reject(error)
-          } else {
-            return resolve(results);
-          }
-        })
-    })
-  } 
-
-  public getAllKeyValue (wildcard: string): Promise<any[]> {
-    return new Promise((resolve, reject) => {
-      this.client.keys(wildcard,
-        async (error: Error, results: string[]) => {
-          if (error) {
-            return reject(error)
-          } else {
-            const allResults = await Promise.all(
-              results.map( async (key) => {
-                const value = await this.getOne(key);
-                return { key, value }
-              })
-            );
-            return resolve(allResults);
-          }
-        })
-    })
+  public async getAllKeys(wildcard: string): Promise<string[]> {
+    const results = await this.client.keys(wildcard);
+    return results;
   }
 
-  public set(key: string, value: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.client.set(key, value, 
-         (error, reply) => {
-          if (error) {
-            return reject(error)
-          } else {
-            this.client.expire(key, this.tokenExpiryTime)
-            return resolve(reply)
-          }
-      });
-    })
-  }
-
-  public deleteOne (key: string): Promise<number> {
-    return new Promise((resolve, reject) => {
-      this.client.del(key,
-        (error, reply) => {
-          if (error) {
-            return reject(error)
-          } else {
-            return resolve(reply)
-          }
-      });
-    })
-  }
-
-  public testConnection (): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.client.set('test', 'connected', 
-        (err) => {
-          if (err) {
-            reject();
-          } else {
-            resolve(true);
-          }
+  public async getAllKeyValue (wildcard: string): Promise<any[]> {
+    const results = await this.client.keys(wildcard);
+    const allResults = await Promise.all(
+      results.map( async (key) => {
+        const value = await this.getOne(key);
+        return { key, value }
       })
-    })
+    );
+    return allResults;
+  }
+
+  public async set(key: string, value: any): Promise<any> {
+    const reply = await this.client.set(key, value);
+    await this.client.expire(key, this.tokenExpiryTime);
+    return reply;
+  }
+
+  public async deleteOne (key: string): Promise<number> {
+    const reply = await this.client.del(key);
+    return reply;
+  }
+
+  public async testConnection (): Promise<any> {
+    await this.client.set('test', 'connected');
+    return true;
   }
 }
 

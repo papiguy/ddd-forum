@@ -1,21 +1,17 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout';
-import Header from '../shared/components/header/components/Header';
 import { Post } from '../modules/forum/models/Post';
 import { toast } from 'react-toastify';
 import PostSummary from '../modules/forum/components/posts/post/components/PostSummary';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { Comment } from '../modules/forum/models/Comment';
-import { BackNavigation } from '../shared/components/header';
 import { CommentUtil } from '../modules/forum/utils/CommentUtil';
 import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
-import { User } from '../modules/users/models/user';
-import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import * as forumOperators from '../modules/forum/redux/operators'
 import { ForumState } from '../modules/forum/redux/states';
@@ -24,12 +20,11 @@ import { SubmitButton } from '../shared/components/button';
 import { TextUtil } from '../shared/utils/TextUtil';
 import { FullPageLoader } from '../shared/components/loader';
 import withVoting from '../modules/forum/hocs/withVoting';
-import { Points } from '../modules/forum/components/posts/points';
+import withRouter, { WithRouterProps } from '../shared/infra/router/withRouter';
 
-interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
+interface DiscussionPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations, WithRouterProps {
   users: UsersState;
   forum: ForumState;
-  history: any;
 }
 
 interface DiscussionState {
@@ -47,23 +42,17 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     }
   }
 
-  getSlugFromWindow (): string {
-    if (typeof window !== 'undefined') {
-      var pathname = window.location.pathname;
-      var slug = pathname.substring(pathname.lastIndexOf("/") + 1);
-      return slug;
-    } else {
-      return "";
-    }
+  getSlug (): string {
+    return this.props.params.slug || '';
   }
 
   getPost (): void {
-    const slug = this.getSlugFromWindow();
+    const slug = this.getSlug();
     this.props.getPostBySlug(slug);
   }
 
   getComments (offset?: number): void {
-    const slug = this.getSlugFromWindow();
+    const slug = this.getSlug();
     this.props.getComments(slug, offset);
   }
 
@@ -135,35 +124,11 @@ class DiscussionPage extends React.Component<DiscussionPageProps, DiscussionStat
     const comments = this.props.forum.comments;
 
     return (
-      <Layout>
-        <div className="header-container flex flex-row flex-center flex-between">
-          <BackNavigation
-            text="Back to all discussions"
-            to="/"
-          />
-          <ProfileButton
-            isLoggedIn={this.props.users.isAuthenticated}
-            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => this.props.logout()}
-          />
-        </div>
-
+      <Layout onLogout={() => this.props.logout()}>
         {this.props.forum.isGettingPostBySlug ? (
           ''
         ) : (
           <>
-
-            <Header
-              title={`"${post.title}"`}
-              isUpvotable={true}
-              onUpvoteClicked={() => this.props.upvotePost(post.slug)}
-              onDownvoteClicked={() => this.props.downvotePost(post.slug)}
-              points={post.points}
-              isLoggedIn={this.props.users.isAuthenticated}
-            />
-
-            <br/>
-            <br/>
             <PostSummary
               {...post as Post}
             />
@@ -218,6 +183,8 @@ function mapActionCreatorsToProps(dispatch: any) {
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
   withLogoutHandling(
-    withVoting(DiscussionPage)
+    withVoting(
+      withRouter(DiscussionPage)
+    )
   )
 );

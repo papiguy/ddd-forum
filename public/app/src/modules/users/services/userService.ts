@@ -5,7 +5,6 @@ import { Result } from "../../../shared/core/Result";
 import { APIResponse } from "../../../shared/infra/services/APIResponse";
 import { LoginDTO } from "../dtos/loginDTO";
 import { User } from "../models/user";
-import { IAuthService } from "./authService";
 
 export interface IUsersService {
   getCurrentUserProfile (): Promise<User>;
@@ -15,11 +14,6 @@ export interface IUsersService {
 }
 
 export class UsersService extends BaseAPI implements IUsersService {
-
-  constructor (authService: IAuthService) {
-    super(authService);
-  }
-
   async getCurrentUserProfile (): Promise<User> {
     const response = await this.get('/users/me', null, { 
       authorization: this.authService.getToken('access-token') 
@@ -29,14 +23,15 @@ export class UsersService extends BaseAPI implements IUsersService {
 
   public async logout (): Promise<APIResponse<void>> {
     try {
-      await this.post('/users/logout', null, null, { 
-        authorization: this.authService.getToken('access-token') 
+      await this.post('/users/logout', null, null, {
+        authorization: this.authService.getToken('access-token')
       })
       this.authService.removeToken('access-token');
       this.authService.removeToken('refresh-token');
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -48,7 +43,8 @@ export class UsersService extends BaseAPI implements IUsersService {
       this.authService.setToken('refresh-token', dto.refreshToken);
       return right(Result.ok<LoginDTO>(dto));
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -57,7 +53,8 @@ export class UsersService extends BaseAPI implements IUsersService {
       await this.post('/users', { email, username, password });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 }

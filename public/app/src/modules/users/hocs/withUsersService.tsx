@@ -1,19 +1,27 @@
 
 import React from 'react';
 import { usersService } from '../services';
+import { UsersService } from '../services/userService';
 
-function withUsersService (WrappedComponent: any) {
-  class HOC extends React.Component {
-    render () {
+export interface WithUsersServiceProps {
+  usersService: UsersService;
+}
+
+function withUsersService<P extends WithUsersServiceProps>(
+  WrappedComponent: React.ComponentType<P>
+): React.ComponentType<Omit<P, 'usersService'>> {
+  type PropsWithoutUsersService = Omit<P, 'usersService'>;
+
+  return class extends React.Component<PropsWithoutUsersService> {
+    render() {
       return (
         <WrappedComponent
-          {...this.props}
+          {...(this.props as P)}
           usersService={usersService}
         />
       );
     }
-  }
-  return HOC;
+  } as React.ComponentType<PropsWithoutUsersService>;
 }
 
 export default withUsersService;

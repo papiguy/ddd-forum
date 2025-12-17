@@ -1,29 +1,132 @@
-.editor  
-  margin-bottom: 1rem;
+@import "../../../../../assets/styles/variables"
+
+.editor
+  margin-bottom: 1rem
 
   .quill
-    border-radius: 3px;
-    border: solid 3px;
-
-    > div
-      border: none;
-
-    .ql-toolbar
-      border-bottom: solid 3px;
-
-  .ql-editor
-    min-height: 90px;
-    transition: 0.2s all;
+    border-radius: 8px
+    border: 1px solid $border-color
+    background: $bg-input
+    transition: all 0.2s ease
 
     &:hover
-      background: #fbfbfb;
-  
+      border-color: $border-hover
+
+    &:focus-within
+      border-color: $accent-primary
+      box-shadow: 0 0 0 3px rgba(51, 153, 255, 0.15)
+
+    > div
+      border: none
+
+    .ql-toolbar
+      border-bottom: 1px solid $border-color
+      background: $bg-secondary
+      border-radius: 8px 8px 0 0
+      padding: 0.75rem
+
+      .ql-formats
+        margin-right: 1rem
+
+      button
+        color: $text-secondary
+        transition: all 0.2s ease
+
+        &:hover
+          color: $text-primary
+
+        &.ql-active
+          color: $accent-primary
+
+      .ql-stroke
+        stroke: $text-secondary
+
+      .ql-fill
+        fill: $text-secondary
+
+      button:hover .ql-stroke
+        stroke: $text-primary
+
+      button:hover .ql-fill
+        fill: $text-primary
+
+      button.ql-active .ql-stroke
+        stroke: $accent-primary
+
+      button.ql-active .ql-fill
+        fill: $accent-primary
+
+      .ql-picker-label
+        color: $text-secondary
+
+        &:hover
+          color: $text-primary
+
+  .ql-editor
+    min-height: 200px
+    transition: 0.2s all
+    color: $text-input
+    background: $bg-input
+    font-size: 0.875rem
+    border-radius: 0 0 8px 8px
+    line-height: 1.6
+
+    &:hover
+      background: $bg-hover
+
+    h1, h2, h3
+      color: $text-primary
+      margin-top: 1rem
+      margin-bottom: 0.5rem
+
+    h1
+      font-size: 1.75rem
+      font-weight: 700
+
+    h2
+      font-size: 1.5rem
+      font-weight: 600
+
+    h3
+      font-size: 1.25rem
+      font-weight: 600
+
+    blockquote
+      border-left: 4px solid $accent-primary
+      padding-left: 1rem
+      margin-left: 0
+      color: $text-secondary
+      font-style: italic
+
+    code
+      background: $bg-primary
+      color: $accent-secondary
+      padding: 0.125rem 0.25rem
+      border-radius: 3px
+      font-family: 'Consolas', monospace
+
+    pre
+      background: $bg-primary
+      color: $text-primary
+      border-radius: 4px
+      padding: 0.75rem
+      overflow-x: auto
+
   .ql-editor.ql-blank::before
-    font-size: 0.9rem;
-    font-style: normal;
+    font-size: 0.875rem
+    font-style: normal
+    color: $text-tertiary
 
   .ql-snow .ql-editor pre.ql-syntax
-    font-family: 'Consolas'
+    font-family: 'Consolas', monospace
+    background: $bg-primary
+    color: $text-primary
+    border-radius: 4px
+    padding: 0.75rem
 
   p, u, ul, li, b
-    font-size: 0.9rem;
+    font-size: 0.875rem
+    color: $text-input
+
+  .ql-container
+    font-family: inherit

@@ -1,14 +1,28 @@
+@import "../../../../assets/styles/variables"
+
 .text-input
-  display: block;
-  padding: 0.6rem 1rem 0.6rem 1rem;
-  border-radius: 3px;
-  border: solid 3px #000000c9;
-  width: 100%;
-  margin-bottom: 0.5rem;
-  color: #000000d6;
-  transition: 0.2s all;
-  font-size: 1rem;
-  box-sizing: border-box;
+  display: block
+  padding: 0.75rem 1rem
+  border-radius: 8px
+  border: 1px solid $border-color
+  width: 100%
+  margin-bottom: 0.75rem
+  color: $text-input
+  background: $bg-input
+  transition: all 0.2s ease
+  font-size: 0.875rem
+  font-weight: 400
+  box-sizing: border-box
+
+  &::placeholder
+    color: $text-tertiary
 
   &:hover
-    background: #fbfbfb;
+    background: $bg-hover
+    border-color: $border-hover
+
+  &:focus
+    outline: none
+    border-color: $accent-primary
+    background: $bg-hover
+    box-shadow: 0 0 0 3px rgba(51, 153, 255, 0.15)

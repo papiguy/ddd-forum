@@ -1,6 +1,6 @@
 
 import React from 'react'
-import { Redirect, Route } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
 import { UsersState } from '../../../modules/users/redux/states';
 //@ts-ignore
 import { connect } from "react-redux";
@@ -9,25 +9,17 @@ import * as usersOperators from '../../../modules/users/redux/operators'
 
 interface AuthenticatedRouteProps {
   users: UsersState;
-  component: any;
-  path: any;
+  children: React.ReactNode;
 }
 
-const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({ users, component: Component, ...rest }) => {
+const AuthenticatedRoute: React.FC<AuthenticatedRouteProps> = ({ users, children }) => {
   // Add your own authentication on the below line.
   const isLoggedIn = users.isAuthenticated;
 
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        isLoggedIn ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
-      }
-    />
+  return isLoggedIn ? (
+    <>{children}</>
+  ) : (
+    <Navigate to="/" replace />
   )
 }
 

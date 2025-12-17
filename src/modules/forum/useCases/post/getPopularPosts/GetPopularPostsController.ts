@@ -18,7 +18,7 @@ export class GetPopularPostsController extends BaseController {
   async executeImpl (req: DecodedExpressRequest, res: express.Response): Promise<any> {
 
     const dto: GetPopularPostsRequestDTO = {
-      offset: req.query.offset,
+      offset: req.query.offset ? Number(req.query.offset) : undefined,
       userId: !!req.decoded === true ? req.decoded.userId : null
     }
 

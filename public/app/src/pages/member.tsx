@@ -1,13 +1,12 @@
 
 import React from 'react'
+import withRouter, { WithRouterProps } from '../shared/infra/router/withRouter';
 
-export class MemberPage extends React.Component<any, any> {
-  constructor (props: any) {
-    super(props);
-  }
+interface MemberPageProps extends WithRouterProps {}
 
+class MemberPage extends React.Component<MemberPageProps> {
   getUserName () {
-    return this.props.match.params.username;
+    return this.props.params.username;
   }
 
   render () {
@@ -22,4 +21,4 @@ export class MemberPage extends React.Component<any, any> {
   }
 }
 
-export default MemberPage;
+export default withRouter(MemberPage);

@@ -1,7 +1,6 @@
 
 import { APIResponse } from "../../../shared/infra/services/APIResponse";
 import { BaseAPI } from "../../../shared/infra/services/BaseAPI";
-import { IAuthService } from "../../users/services/authService";
 import { Comment } from "../models/Comment";
 import { Result } from "../../../shared/core/Result";
 import { right, left } from "../../../shared/core/Either";
@@ -18,11 +17,6 @@ export interface ICommentService {
 }
 
 export class CommentService extends BaseAPI implements ICommentService {
-
-  constructor (authService: IAuthService) {
-    super(authService);
-  }
-
   async createReplyToPost (comment: string, slug: string): Promise<APIResponse<void>> {
     try {
       await this.post('/comments', { comment }, { slug }, { 
@@ -30,7 +24,8 @@ export class CommentService extends BaseAPI implements ICommentService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -41,7 +36,8 @@ export class CommentService extends BaseAPI implements ICommentService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -61,7 +57,8 @@ export class CommentService extends BaseAPI implements ICommentService {
         response.data.comments.map((c: CommentDTO) => CommentUtil.toViewModel(c)))
       );
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -78,7 +75,8 @@ export class CommentService extends BaseAPI implements ICommentService {
       );
       return right(Result.ok<Comment>(CommentUtil.toViewModel(response.data.comment)));
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -89,7 +87,8 @@ export class CommentService extends BaseAPI implements ICommentService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 
@@ -100,7 +99,8 @@ export class CommentService extends BaseAPI implements ICommentService {
       });
       return right(Result.ok<void>());
     } catch (err) {
-      return left(err.response ? err.response.data.message : "Connection failed")
+      const error = err as any;
+      return left(error.response ? error.response.data.message : "Connection failed")
     }
   }
 

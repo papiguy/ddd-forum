@@ -1,7 +1,6 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout'
-import Header from '../shared/components/header/components/Header'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
 import { TextUtil } from '../shared/utils/TextUtil';
@@ -15,7 +14,6 @@ import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
 interface JoinPageProps extends IUserOperators {
   users: UsersState;
-  history: any;
 }
 
 interface JoinPageState {
@@ -105,12 +103,6 @@ class JoinPage extends React.Component<JoinPageProps, JoinPageState> {
   render () {
     return (
       <Layout>
-        <div className="header-container flex flex-row flex-center flex-even">
-          <Header
-            title="Domain-Driven Designers"
-            subtitle="Where awesome Domain-Driven Designers are made"
-          />
-        </div>
         <OnboardTemplate
           type="signup"
           updateFormField={

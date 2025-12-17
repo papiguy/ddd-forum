@@ -22,17 +22,38 @@ DDDForum.com is the application that we build in [solidbook.io - The Software De
 ## Running the project
 
 1. Install and start [Docker](https://docs.docker.com/compose/gettingstarted/) if you haven't already.
-2. Copy the `.env` template file. Feel free to change passwords and app secrets. 
+
+2. Copy the `.env` template file and configure your database type.
 
 ```bash
 cp .env.template .env
 ```
 
-3. Build and run the image to run the backend services.
+Edit `.env` and set your database type (options: `mysql`, `postgres`, or `mongodb`):
 
 ```bash
-docker-compose up
+# Options: mysql | postgres | mongodb
+DDD_FORUM_DB_TYPE=mysql
+
+# Optional: Set custom ports
+DDD_FORUM_DB_PORT=3306  # MySQL: 3306, PostgreSQL: 5432, MongoDB: 27017
 ```
+
+3. Start the Docker services using the helper script:
+
+```bash
+./docker-start.sh
+```
+
+Or manually with Docker Compose:
+
+```bash
+docker-compose --profile mysql up -d     # For MySQL
+docker-compose --profile postgres up -d  # For PostgreSQL
+docker-compose --profile mongodb up -d   # For MongoDB
+```
+
+> See [DOCKER.md](./DOCKER.md) for detailed Docker documentation and troubleshooting.
 
 4. Open up an additional console and then run:
 

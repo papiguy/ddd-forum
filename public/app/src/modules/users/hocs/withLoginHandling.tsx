@@ -1,20 +1,17 @@
 
 import React from 'react';
+import { useNavigate, NavigateFunction } from 'react-router-dom';
 import { UsersState } from '../redux/states';
 import { IUserOperators } from '../redux/operators';
 import { toast } from 'react-toastify';
 
 interface withLoginHandlingProps extends IUserOperators {
   users: UsersState
-  history: any;
+  navigate: NavigateFunction;
 }
 
 function withLoginHandling (WrappedComponent: any) {
   class HOC extends React.Component<withLoginHandlingProps, any> {
-    constructor (props: withLoginHandlingProps) {
-      super(props)
-    }
-
     handleLogin (username: string, password: string) {
       this.props.login(username, password);
     }
@@ -23,7 +20,7 @@ function withLoginHandling (WrappedComponent: any) {
       const currentProps: withLoginHandlingProps = this.props;
       if (currentProps.users.isLoggingInSuccess && !prevProps.users.isLoggingInSuccess) {
         this.props.getUserProfile();
-        setTimeout(() => { this.props.history.push('/')}, 3000)
+        setTimeout(() => { this.props.navigate('/')}, 3000)
         return toast.success("Logged in! 🤠", {
           autoClose: 3000
         })
@@ -48,13 +45,20 @@ function withLoginHandling (WrappedComponent: any) {
     render () {
       return (
         <WrappedComponent
-          login={(u: string, p: string) => this.handleLogin(u, p)}
           {...this.props}
+          login={(u: string, p: string) => this.handleLogin(u, p)}
         />
       );
     }
   }
-  return HOC;
+
+  // Wrapper to inject navigate from hook
+  const WithNavigate = (props: any) => {
+    const navigate = useNavigate();
+    return <HOC {...props} navigate={navigate} />;
+  };
+
+  return WithNavigate;
 }
 
 export default withLoginHandling;

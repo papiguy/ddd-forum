@@ -5,7 +5,7 @@ import { CommentDTO } from "../dtos/commentDTO";
 export class CommentUtil {
 
   public static maxCommentLength: number = 10000;
-  public static minCommentLength: number = 20;
+  public static minCommentLength: number = 10;
 
   private static sortByDateDesc (a: Comment, b: Comment) {
     return Number(new Date(a.createdAt)) - Number(new Date(b.createdAt))

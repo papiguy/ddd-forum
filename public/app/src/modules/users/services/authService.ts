@@ -5,7 +5,7 @@ type TokenType = 'access-token' | 'refresh-token';
 
 export interface IAuthService {
   isAuthenticated (): boolean;
-  getToken (tokenType: TokenType): JWTToken | RefreshToken;
+  getToken (tokenType: TokenType): JWTToken | RefreshToken | null;
   setToken (tokenType: TokenType, token: JWTToken | RefreshToken): void;
   removeToken (tokenType: TokenType): void;
 }
@@ -15,9 +15,9 @@ export class AuthService implements IAuthService {
   public static accessTokenName: string = 'ddd-forum-access-token';
   public static refreshTokenName: string = 'ddd-forum-refresh-token';
 
-  public accessToken: JWTToken;
-  public refreshToken: RefreshToken;
-  
+  public accessToken: JWTToken | null;
+  public refreshToken: RefreshToken | null;
+
   constructor () {
     this.accessToken = this.getToken('access-token');
     this.refreshToken = this.getToken('refresh-token');
@@ -29,9 +29,9 @@ export class AuthService implements IAuthService {
     : AuthService.refreshTokenName
   }
 
-  public getToken (tokenType: TokenType): JWTToken | RefreshToken {
+  public getToken (tokenType: TokenType): JWTToken | RefreshToken | null {
     const tokenName: string = this.getTokenName(tokenType);
-  
+
     const token = localStorage.getItem(tokenName);
     return token ? JSON.parse(token).token : null;
   }

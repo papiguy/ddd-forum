@@ -1,40 +1,43 @@
+@import "../../../../../../assets/styles/variables"
 
 .post-points-hover
-  background-color: #111;
-  position: absolute;
-  width: 100px;
-  color: #fff;
-  padding: .5rem;
-  font-size: .6rem;
-  left: -7.5rem;
-  top: 5px;
-  border-radius: 5px;
-  border-color: transparent;
-  transition: all .2s ease-in-out;
-  transform: scale(0);
-  transform-origin: 100% 50%;
+  background-color: $bg-secondary
+  position: absolute
+  width: 100px
+  color: $text-primary
+  padding: .5rem
+  font-size: .6rem
+  left: -7.5rem
+  top: 5px
+  border-radius: 6px
+  border: 1px solid $border-color
+  transition: all .2s ease-in-out
+  transform: scale(0)
+  transform-origin: 100% 50%
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4)
 
   &.is-hover
-    transform: scale(1.1);
+    transform: scale(1.1)
 
   &:after
-    display: block;
-    width: 0px;
-    height: 0px;
-    border-top: 10px solid transparent;
-    border-bottom: 10px solid transparent;
-    border-left: 10px solid #111;
-    content: '';
-    position: absolute;
-    right: -8px;
-    transform: translateY(-50%);
-    top: 50%;
+    display: block
+    width: 0px
+    height: 0px
+    border-top: 10px solid transparent
+    border-bottom: 10px solid transparent
+    border-left: 10px solid $bg-secondary
+    content: ''
+    position: absolute
+    right: -8px
+    transform: translateY(-50%)
+    top: 50%
 
   p
-    margin: 0;
+    margin: 0
 
   a
-    color: rgba(255, 255, 255, .8);
+    color: $accent-primary
+    transition: color 0.2s ease
 
     &:hover
-      color: #fff;
+      color: $accent-hover

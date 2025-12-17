@@ -1,20 +1,29 @@
+@import "../../../../assets/styles/variables"
+
 .submit-button
-  padding: 1rem;
-  border: none;
-  background: #6a69ff;
-  border-radius: 3px;
-  color: white;
-  font-weight: 500;
-  font-size: 1rem;
-  cursor: pointer;
-  border-bottom: solid 9px darken(#6a69ff, 10%);
+  padding: 0.75rem 1.5rem
+  border: none
+  background: $accent-primary
+  border-radius: 8px
+  color: white
+  font-weight: 500
+  font-size: 0.875rem
+  cursor: pointer
+  transition: all 0.2s ease
+  box-shadow: 0 2px 8px rgba(51, 153, 255, 0.3)
 
   &:hover
-    background: darken(#6a69ff, 3%)
+    background: $accent-hover
+    transform: translateY(-1px)
+    box-shadow: 0 4px 12px rgba(51, 153, 255, 0.4)
+
+  &:active
+    transform: translateY(0)
 
   &.negative
-    background: #ea5f8b;
-    border-bottom: solid 3px darken(#ea5f8b, 10%);
+    background: $error
+    box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3)
 
     &:hover
-      background: darken(#ea5f8b, 3%)
+      background: darken($error, 5%)
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4)

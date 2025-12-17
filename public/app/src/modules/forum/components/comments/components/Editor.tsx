@@ -56,11 +56,11 @@ class Editor extends React.Component<EditorProps, EditorState> {
     return (
       <div className="editor">
         {typeof window !== 'undefined' ? (
-          <ReactQuill 
+          <ReactQuill
             placeholder={this.props.placeholder}
             ref={(el) => { this.reactQuillRef = el }}
             value={text}
-            onChange={this.handleChange} 
+            onChange={this.handleChange}
             formats={[
               'header',
               'bold', 'italic', 'underline', 'strike', 'blockquote',
@@ -69,8 +69,14 @@ class Editor extends React.Component<EditorProps, EditorState> {
               'code-block'
             ]}
             modules={{
-              // syntax: true,
-              toolbar: ['bold', 'italic', 'underline', 'link', 'code-block', 'list']
+              toolbar: [
+                [{ 'header': [1, 2, 3, false] }],
+                ['bold', 'italic', 'underline', 'strike'],
+                ['blockquote', 'code-block'],
+                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                ['link', 'image'],
+                ['clean']
+              ]
             }}
           />
         ) : ''}

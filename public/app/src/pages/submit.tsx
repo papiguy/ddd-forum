@@ -1,8 +1,6 @@
 
 import React from 'react'
 import { Layout } from '../shared/layout';
-import Header from '../shared/components/header/components/Header';
-import { ProfileButton } from '../modules/users/components/profileButton';
 import { UsersState } from '../modules/users/redux/states';
 import { toast } from 'react-toastify';
 //@ts-ignore
@@ -18,11 +16,11 @@ import { TextUtil } from '../shared/utils/TextUtil';
 import { PostUtil } from '../modules/forum/utils/PostUtil';
 import { FullPageLoader } from '../shared/components/loader';
 import { ForumState } from '../modules/forum/redux/states';
+import withRouter, { WithRouterProps } from '../shared/infra/router/withRouter';
 
-interface SubmitPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
+interface SubmitPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations, WithRouterProps {
   users: UsersState;
   forum: ForumState;
-  history: any;
 }
 
 interface SubmitPageState {
@@ -113,7 +111,7 @@ class SubmitPage extends React.Component<SubmitPageProps, SubmitPageState> {
         autoClose: 2000
       });
       setTimeout(() => {
-        this.props.history.push('/?show=new')
+        this.props.navigate('/?show=new')
       }, 2000)
     }
   }
@@ -135,20 +133,7 @@ class SubmitPage extends React.Component<SubmitPageProps, SubmitPageState> {
 
   render () {
     return (
-      <Layout>
-        <div className="header-container flex flex-row flex-center flex-even">
-          <Header
-            title="New submission"
-            subtitle=""
-          />
-          <ProfileButton
-            isLoggedIn={this.props.users.isAuthenticated}
-            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => this.props.logout()}
-          />
-        </div>
-        <br/>
-        <br/>
+      <Layout onLogout={() => this.props.logout()}>
         <PostSubmission
           updateFormField={(f: string, val: string) => this.updateFormField(f, val)}
           onPostTypeChanged={(type: PostType) => this.onPostTypeChanged(type)}
@@ -181,5 +166,7 @@ function mapActionCreatorsToProps(dispatch: any) {
 }
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
-  withLogoutHandling(SubmitPage)
+  withLogoutHandling(
+    withRouter(SubmitPage)
+  )
 );

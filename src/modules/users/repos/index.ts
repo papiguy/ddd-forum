@@ -1,7 +1,6 @@
 
-import { SequelizeUserRepo } from "./implementations/sequelizeUserRepo";
-import models from "../../../shared/infra/database/sequelize/models";
+import { UserRepo } from "./implementations/typeormUserRepo";
 
-const userRepo = new SequelizeUserRepo(models);
+const userRepo = new UserRepo();
 
 export { userRepo }

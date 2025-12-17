@@ -1,5 +1,5 @@
 
-import { RedisClient } from 'redis';
+import type { RedisClientType } from 'redis';
 import * as jwt from 'jsonwebtoken'
 import * as uuid from "uuid"
 import randtoken from 'rand-token'
@@ -18,10 +18,10 @@ import { User } from '../../domain/user';
  */
 
 export class RedisAuthService extends AbstractRedisClient implements IAuthService {
-  
+
   public jwtHashName: string  = 'activeJwtClients';
-  
-  constructor (redisClient: RedisClient) {
+
+  constructor (redisClient: RedisClientType) {
     super(redisClient);
   }
 

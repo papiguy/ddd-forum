@@ -4,8 +4,6 @@ import { Comment } from '../modules/forum/models/Comment';
 import { Layout } from '../shared/layout';
 import Editor from '../modules/forum/components/comments/components/Editor';
 import { SubmitButton } from '../shared/components/button';
-import Header from '../shared/components/header/components/Header';
-import { BackNavigation } from '../shared/components/header';
 import PostCommentAuthorAndText from '../modules/forum/components/posts/post/components/PostCommentAuthorAndText';
 import PostComment from '../modules/forum/components/posts/post/components/PostComment';
 import { CommentUtil } from '../modules/forum/utils/CommentUtil';
@@ -15,14 +13,13 @@ import { toast } from 'react-toastify';
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import * as usersOperators from '../modules/users/redux/operators'
-import { User } from '../modules/users/models/user';
-import { ProfileButton } from '../modules/users/components/profileButton';
 import withLogoutHandling from '../modules/users/hocs/withLogoutHandling';
 import { ForumState } from '../modules/forum/redux/states';
 import * as forumOperators from '../modules/forum/redux/operators'
 import { Loader } from '../shared/components/loader';
 import { TextUtil } from '../shared/utils/TextUtil';
 import withVoting from '../modules/forum/hocs/withVoting';
+import withRouter, { WithRouterProps } from '../shared/infra/router/withRouter';
 
 interface CommentState {
   newCommentText: string;
@@ -30,7 +27,7 @@ interface CommentState {
 
 }
 
-interface CommentPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations {
+interface CommentPageProps extends usersOperators.IUserOperators, forumOperators.IForumOperations, WithRouterProps {
   users: UsersState;
   forum: ForumState;
 }
@@ -66,18 +63,12 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     })
   }
 
-  getCommentIdFromWindow (): string {
-    if (typeof window !== 'undefined') {
-      var pathname = window.location.pathname;
-      var slug = pathname.substring(pathname.lastIndexOf("/") + 1);
-      return slug;
-    } else {
-      return "";
-    }
+  getCommentId (): string {
+    return this.props.params.commentId || '';
   }
 
   getComment (): void {
-    const commentId = this.getCommentIdFromWindow();
+    const commentId = this.getCommentId();
     this.props.getCommentByCommentId(commentId);
   }
 
@@ -155,24 +146,7 @@ class CommentPage extends React.Component<CommentPageProps, CommentState> {
     const isCommentFetched = this.props.forum.isGettingCommentByCommentIdSuccess;
 
     return (
-      <Layout>
-        <div className="header-container flex flex-row flex-center flex-even">
-          <Header title={``} />
-          {!isCommentFetched ? (
-            <Loader/>
-          ) : (
-            <BackNavigation
-              to={`/discuss/${comment.postSlug}`}
-              text={`Back to "${comment.postTitle}"`}
-            />
-          )}
-          <ProfileButton
-            isLoggedIn={this.props.users.isAuthenticated}
-            username={this.props.users.isAuthenticated ? (this.props.users.user as User).username : ''}
-            onLogout={() => this.props.logout()}
-          />
-        </div>
-        <br/>
+      <Layout onLogout={() => this.props.logout()}>
         {
           !isCommentFetched ? (
             <div style={{ margin: '0 auto', textAlign: 'center' }}>
@@ -231,6 +205,8 @@ function mapActionCreatorsToProps(dispatch: any) {
 
 export default connect(mapStateToProps, mapActionCreatorsToProps)(
   withLogoutHandling(
-    withVoting(CommentPage)
+    withVoting(
+      withRouter(CommentPage)
+    )
   )
 );

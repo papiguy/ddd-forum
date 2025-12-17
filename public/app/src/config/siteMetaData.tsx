@@ -1,7 +1,7 @@
-
+import { branding } from './branding';
 
 const siteMetaData = {
-  title: 'Domain-Driven Designers | A forum to discuss Domain-Driven Design'
+  title: `${branding.name} | ${branding.tagline}`
 }
 
 export {

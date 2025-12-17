@@ -3,7 +3,6 @@ import React from 'react'
 import { Layout } from '../shared/layout'
 import { toast } from 'react-toastify';
 import { OnboardTemplate } from '../modules/users/components/onboarding/onboardTemplate'
-import Header from '../shared/components/header/components/Header'
 import { IUserOperators } from '../modules/users/redux/operators';
 import { UsersState } from '../modules/users/redux/states';
 //@ts-ignore
@@ -14,7 +13,6 @@ import withLoginHandling from '../modules/users/hocs/withLoginHandling';
 
 interface LoginPageProps extends IUserOperators {
   users: UsersState;
-  history: any;
 }
 
 interface LoginPageState {
@@ -70,12 +68,6 @@ class LoginPage extends React.Component<LoginPageProps, LoginPageState> {
   render () {
     return (
       <Layout>
-        <div className="header-container flex flex-row flex-center flex-even">
-          <Header
-            title="Domain-Driven Designers"
-            subtitle="Where awesome Domain-Driven Designers are made"
-          />
-        </div>
         <OnboardTemplate
           type="login"
           updateFormField={(fieldName: string, val: string) => this.updateFormField(fieldName, val)}

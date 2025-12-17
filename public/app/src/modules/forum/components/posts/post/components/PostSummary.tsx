@@ -15,7 +15,7 @@ const PostSummary: React.FC<PostProps> = (props) => (
     {!!props.text ? (
       <div dangerouslySetInnerHTML={{ __html: props.text }}/>
     ) : (
-      <a className="link" target="_blank" href={props.link}>Click to visit the link at {TextUtil.getDomainNameFromUrl(props.link)}</a>
+      <a className="link" target="_blank" rel="noreferrer" href={props.link}>Click to visit the link at {TextUtil.getDomainNameFromUrl(props.link)}</a>
     )}
     
   </div>

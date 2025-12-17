@@ -23,7 +23,7 @@ const Points: React.FC<PostPointsProps> = (props) => {
         onMouseLeave={() => setHover(false)}
       >
         {!props.isLoggedIn && <PointHover isHover={isHover} />}
-        <img src={arrowSvg}/>
+        <img src={arrowSvg} alt="Upvote"/>
       </div>
       <div>{props.points}</div>
       <div
@@ -32,7 +32,7 @@ const Points: React.FC<PostPointsProps> = (props) => {
         onMouseEnter={() => setHover(true)}
         onMouseLeave={() => setHover(false)}
       >
-        <img src={arrowSvg}/>
+        <img src={arrowSvg} alt="Downvote"/>
       </div>
     </div>
   )
